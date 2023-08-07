@@ -1,8 +1,9 @@
+import { useState } from 'react';
+import axios from 'axios';
+import { TableEditProduct } from './TableEditProduct';
+import { Button, Col, Form, Row, Table } from 'react-bootstrap';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import axios from 'axios';
-import { useState } from 'react';
-import { Button, Col, Form, Row, Table } from 'react-bootstrap';
 
 export const EditProduct = () => {
   const URI = import.meta.env.VITE_APP_API;
@@ -10,7 +11,9 @@ export const EditProduct = () => {
   const [product, setProduct] = useState('');
   const [inventory, setInventory] = useState([]);
   const [itemQuantities, setItemQuantities] = useState({});
+  const [itemObservations, setItemObservations] = useState({});
 
+  // Search product
   const handleSubmit = async e => {
     e.preventDefault();
 
@@ -27,7 +30,6 @@ export const EditProduct = () => {
           alert('Error, no se pudo encontrar el producto');
         } else {
           setInventory(response.data);
-          console.log(response.data);
         }
       })
       .catch(error => {
@@ -35,7 +37,7 @@ export const EditProduct = () => {
       });
   };
 
-  // POST API to add product
+  // Add product to inventory
   const handleAdd = async (e, item) => {
     let formData = new FormData();
     formData.append('option', 'addProduct');
@@ -59,7 +61,7 @@ export const EditProduct = () => {
     console.log(itemQuantities[item.id_inventario]);
   };
 
-  // POST API to delete product
+  // Delete product from inventory
   const handleDelete = async (e, item) => {
     let formData = new FormData();
     formData.append('option', 'deleteProduct');
@@ -103,7 +105,16 @@ export const EditProduct = () => {
           </Col>
         </Row>
         <Row className='mt-4'>
-          <Table striped bordered hover fixed>
+          {/* <TableEditProduct
+            inventory={inventory}
+            itemQuantities={itemQuantities}
+            setItemQuantities={setItemQuantities}
+            itemObservations={itemObservations}
+            setItemObservations={setItemObservations}
+            handleAdd={handleAdd}
+            handleDelete={handleDelete}
+          /> */}
+          <Table striped bordered hover>
             <thead>
               <tr>
                 <th style={{ width: '10%' }}>Item Code</th>
