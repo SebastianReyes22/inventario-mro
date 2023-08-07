@@ -1,0 +1,77 @@
+* {
+    font-family: 'Roboto', sans-serif;
+}
+  
+body {
+    background: #6c757d;
+    color: #e3e3e3;
+}
+
+.form-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+  
+.login-title {
+    font-size: 26px;
+    text-align: center;
+    padding: 2%;
+    background: #e9ecef;
+}
+
+.main-layout {
+    display: grid;
+    grid-template-columns: 250px auto;
+    height: 100vh;
+}
+
+.sidebar-container {
+    background: #212529;
+    position: sticky;
+}
+
+.sidebar-title {
+    padding: 20px 0;
+    font-size: 22px;
+    text-align: center;
+    background: #343a40;
+}
+
+.sidebar-div {
+    margin: 10% 0;
+    :hover {
+        background: #6c757d;
+    }
+    .sidebar-link {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        padding: 10px 0;
+        color: #eeeeee;
+        .sidebar-icon {
+            padding: 0 10px;
+            display: flex;
+        }
+        &.active {
+            background: #6c757d;
+        }
+    }
+}
+
+.card-header {
+    font-size: 28px;
+    text-align: center;
+    background: #e9ecef;
+}
+
+.td-img {
+    display: flex;
+    justify-content: center;
+}
+
+.table-img {
+    width: 100px;
+    height: 70px;
+}
