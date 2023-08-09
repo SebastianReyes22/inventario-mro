@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave } from '@fortawesome/free-regular-svg-icons';
+import { InputLocation } from './InputLocation';
 
 export const NewProduct = () => {
   const URI = import.meta.env.VITE_APP_API;
@@ -10,7 +11,8 @@ export const NewProduct = () => {
   const [itemCode, setItemCode] = useState('');
   const [description, setDescription] = useState('');
   const [descriptionEnglish, setDescriptionEnglish] = useState('');
-  const [location, setLocation] = useState('');
+  const [location, setLocation] = useState([]);
+  const [locationSelected, setLocationSelected] = useState('');
   const [quantity, setQuantity] = useState('');
 
   const convertToBase64 = files => {
@@ -73,13 +75,13 @@ export const NewProduct = () => {
             />
           </Col>
           <Col>
-            <Form.Label>Ubicacion</Form.Label>
-            <Form.Select value={location} onChange={e => setLocation(e.target.value)}>
-              <option value=''>Seleccionar</option>
-              <option value='Bodega 1'>Bodega 1</option>
-              <option value='Bodega 2'>Bodega 2</option>
-              <option value='Bodega 3'>Bodega 3</option>
-            </Form.Select>
+            <InputLocation
+              URI={URI}
+              location={location}
+              setLocation={setLocation}
+              locationSelected={locationSelected}
+              setLocationSelected={setLocationSelected}
+            />
           </Col>
           <Col>
             <Form.Label>Cantidad</Form.Label>

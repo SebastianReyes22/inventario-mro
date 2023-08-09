@@ -12,9 +12,19 @@ export const Reports = () => {
     let formData = new FormData();
     formData.append('option', 'inventario');
 
-    await axios.post(URI, formData).then(response => {
-      setInventory(response.data);
-    });
+    await axios
+      .post(URI, formData)
+      .then(response => {
+        if (response.data.inventory === false) {
+          setInventory([]);
+          console.log('Sin items');
+        } else {
+          setInventory(response.data);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   useEffect(() => {

@@ -33,7 +33,7 @@
             }
             echo json_encode($array);
         } else {
-            echo json_decode(['inventory' => false]);
+            echo json_encode(['inventory' => false]);
         }
     }
 
@@ -124,6 +124,28 @@
             echo json_encode(['status' => true]);
         } else {
             echo json_encode(['status' => false]);
+        }
+    }
+
+    if ($_POST['option'] == 'getLocations') {
+        $array = [];
+        $x = 0;
+    
+        $sql = "SELECT * FROM ubicaciones;";
+    
+        $statement = $db->prepare($sql);
+        
+        $statement->execute();
+    
+        if ($statement->rowCount() >= 1) {
+            while ($row = $statement->fetch()) {
+                $array[$x]['id_ubicacion'] = $row['id_ubicacion'];
+                $array[$x]['nombre_ubicacion'] = $row['nombre_ubicacion'];
+                $x++;
+            }
+            echo json_encode($array);
+        } else {
+            echo json_encode(['locations' => false]);
         }
     }
 ?>
