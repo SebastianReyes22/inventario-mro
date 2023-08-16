@@ -30,7 +30,7 @@ export const NewProduct = () => {
     if (
       itemCode === '' ||
       description === '' ||
-      location === '' ||
+      locationSelected === '' ||
       quantity === '' ||
       descriptionEnglish === '' ||
       document.querySelector('input[type="file"]').files.length === 0
@@ -48,7 +48,7 @@ export const NewProduct = () => {
     formData.append('item_code', itemCode);
     formData.append('descripcion', description);
     formData.append('descripcion_ingles', descriptionEnglish);
-    formData.append('ubicacion', location);
+    formData.append('ubicacion', locationSelected);
     formData.append('cantidad', quantity);
     formData.append('imagen', base64);
 

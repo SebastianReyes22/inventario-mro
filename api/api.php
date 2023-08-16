@@ -91,36 +91,48 @@
         }
     }
 
-    // Agrega producto +1 en el inventario
+    // Agrega producto en el inventario y registra usuario que hizo movimiento
     if ($_POST['option'] == 'addProduct') {
-        $sql = "UPDATE inventario SET cantidad = cantidad + :cantidad WHERE id_inventario = :id_inventario;";
-
-        $statement = $db->prepare($sql);
-
-        $statement->bindParam(':id_inventario', $_POST['id_inventario']);
-        $statement->bindParam(':cantidad', $_POST['cantidad']);
-
-        $statement->execute();
-
-        if ($statement->rowCount() > 0) {
+        $updateSql = "UPDATE inventario SET cantidad = cantidad + :cantidad WHERE id_inventario = :id_inventario;";
+        $insertSql = "INSERT INTO movimientos (usuario, item, comentario, fecha_movimiento) VALUES (:usuario, :item, :comentario, :fecha_movimiento);";
+    
+        $updateStatement = $db->prepare($updateSql);
+        $updateStatement->bindParam(':cantidad', $_POST['cantidad']);
+        $updateStatement->bindParam(':id_inventario', $_POST['id_inventario']);
+        $updateResult = $updateStatement->execute();
+    
+        $insertStatement = $db->prepare($insertSql);
+        $insertStatement->bindParam(':usuario', $_POST['usuario']);
+        $insertStatement->bindParam(':item', $_POST['item']);
+        $insertStatement->bindParam(':comentario', $_POST['comentario']);
+        $insertStatement->bindParam(':fecha_movimiento', $_POST['fecha_movimiento']);
+        $insertResult = $insertStatement->execute();
+    
+        if ($updateResult && $insertResult) {
             echo json_encode(['status' => true]);
         } else {
             echo json_encode(['status' => false]);
         }
     }
 
-    // Elimina producto -1 en el inventario
+    // Elimina producto del inventario y registra usuario que hizo movimiento
     if ($_POST['option'] == 'deleteProduct') {
-        $sql = "UPDATE inventario SET cantidad = cantidad - :cantidad WHERE id_inventario = :id_inventario;";
+        $updateSql = "UPDATE inventario SET cantidad = cantidad - :cantidad WHERE id_inventario = :id_inventario;";
+        $insertSql = "INSERT INTO movimientos (usuario, item, comentario, fecha_movimiento) VALUES (:usuario, :item, :comentario, :fecha_movimiento);";
 
-        $statement = $db->prepare($sql);
+        $updateStatement = $db->prepare($updateSql);
+        $updateStatement->bindParam(':cantidad', $_POST['cantidad']);
+        $updateStatement->bindParam(':id_inventario', $_POST['id_inventario']);
+        $updateResult = $updateStatement->execute();
 
-        $statement->bindParam(':id_inventario', $_POST['id_inventario']);
-        $statement->bindParam(':cantidad', $_POST['cantidad']);
+        $insertStatement = $db->prepare($insertSql);
+        $insertStatement->bindParam(':usuario', $_POST['usuario']);
+        $insertStatement->bindParam(':item', $_POST['item']);
+        $insertStatement->bindParam(':comentario', $_POST['comentario']);
+        $insertStatement->bindParam(':fecha_movimiento', $_POST['fecha_movimiento']);
+        $insertResult = $insertStatement->execute();
 
-        $statement->execute();
-
-        if ($statement->rowCount() > 0) {
+        if ($updateResult && $insertResult) {
             echo json_encode(['status' => true]);
         } else {
             echo json_encode(['status' => false]);

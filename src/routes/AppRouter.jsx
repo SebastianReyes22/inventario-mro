@@ -1,5 +1,11 @@
 import { Route, Routes } from 'react-router-dom';
-import { EditProductPage, LoginPage, NewProductPage, ReportPage } from '../pages/admin';
+import {
+  CreateNewUserPage,
+  EditProductPage,
+  LoginPage,
+  NewProductPage,
+  ReportPage,
+} from '../pages/admin';
 import { FindItemPage } from '../pages/guest';
 import ProtectedRoutes from './ProtectedRoutes';
 
@@ -11,6 +17,8 @@ export const AppRouter = () => {
       <Route path='*' element={<h1>Page not found 404</h1>} />
 
       <Route path='/buscar' element={<FindItemPage />} />
+
+      <Route path='/new-user' element={<CreateNewUserPage />} />
 
       {/* Private routes */}
       <Route

@@ -1,5 +1,11 @@
 import { createContext, useEffect, useState, useContext } from 'react';
-import { signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
+import {
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from 'firebase/auth';
 import { auth } from '../auth/firebase';
 
 const userAuthContext = createContext();
@@ -17,6 +23,15 @@ export function UserAuthContextProvider({ children }) {
     return signOut(auth);
   }
 
+  //New User Firebase
+  function newUser(email, password, displayName) {
+    return createUserWithEmailAndPassword(auth, email, password).then(userCredential => {
+      updateProfile(userCredential.user, {
+        displayName: displayName,
+      });
+    });
+  }
+
   useEffect(() => {
     onAuthStateChanged(auth, currentUser => {
       setUser(currentUser);
@@ -24,7 +39,7 @@ export function UserAuthContextProvider({ children }) {
   }, []);
 
   return (
-    <userAuthContext.Provider value={{ user, logIn, logOut }}>
+    <userAuthContext.Provider value={{ user, logIn, logOut, newUser }}>
       {children}
     </userAuthContext.Provider>
   );

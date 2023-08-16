@@ -4,9 +4,11 @@ import { TableEditProduct } from './TableEditProduct';
 import { Button, Col, Form, Row, Table } from 'react-bootstrap';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useUserAuth } from '../../context/UserAuthContext';
 
 export const EditProduct = () => {
   const URI = import.meta.env.VITE_APP_API;
+  const { user } = useUserAuth();
 
   const [product, setProduct] = useState('');
   const [inventory, setInventory] = useState([]);
@@ -43,6 +45,11 @@ export const EditProduct = () => {
     formData.append('option', 'addProduct');
     formData.append('id_inventario', item.id_inventario);
     formData.append('cantidad', itemQuantities[item.id_inventario]);
+    formData.append('usuario', user.displayName);
+    formData.append('item', item.item_code);
+    formData.append('tipo_movimiento', 'alta');
+    formData.append('comentario', itemObservations[item.id_inventario]);
+    formData.append('fecha_movimiento', new Date().toISOString().slice(0, 10));
 
     await axios
       .post(URI, formData)
@@ -58,7 +65,6 @@ export const EditProduct = () => {
       .catch(error => {
         console.log(error, 'error');
       });
-    console.log(itemQuantities[item.id_inventario]);
   };
 
   // Delete product from inventory
@@ -67,6 +73,11 @@ export const EditProduct = () => {
     formData.append('option', 'deleteProduct');
     formData.append('id_inventario', item.id_inventario);
     formData.append('cantidad', itemQuantities[item.id_inventario]);
+    formData.append('usuario', user.displayName);
+    formData.append('item', item.item_code);
+    formData.append('tipo_movimiento', 'baja');
+    formData.append('comentario', itemObservations[item.id_inventario]);
+    formData.append('fecha_movimiento', new Date().toISOString().slice(0, 10));
 
     await axios
       .post(URI, formData)
@@ -105,7 +116,7 @@ export const EditProduct = () => {
           </Col>
         </Row>
         <Row className='mt-4'>
-          {/* <TableEditProduct
+          <TableEditProduct
             inventory={inventory}
             itemQuantities={itemQuantities}
             setItemQuantities={setItemQuantities}
@@ -113,8 +124,8 @@ export const EditProduct = () => {
             setItemObservations={setItemObservations}
             handleAdd={handleAdd}
             handleDelete={handleDelete}
-          /> */}
-          <Table striped bordered hover>
+          />
+          {/* <Table striped bordered hover>
             <thead>
               <tr>
                 <th style={{ width: '10%' }}>Item Code</th>
@@ -162,7 +173,7 @@ export const EditProduct = () => {
                 </tr>
               ))}
             </tbody>
-          </Table>
+          </Table> */}
         </Row>
       </Form>
     </div>
