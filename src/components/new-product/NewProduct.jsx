@@ -52,13 +52,20 @@ export const NewProduct = () => {
     formData.append('cantidad', quantity);
     formData.append('imagen', base64);
 
-    await axios.post(URI, formData).then(response => {
-      console.log(response.data);
-      if (response.data.insert === true) {
-        alert('Producto agregado correctamente');
-        window.location.reload();
-      }
-    });
+    await axios
+      .post(URI, formData)
+      .then(response => {
+        console.log(response.data);
+        if (response.data.insert === true) {
+          alert('Producto agregado correctamente');
+          window.location.reload();
+        } else {
+          alert(response.data.insert);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   return (

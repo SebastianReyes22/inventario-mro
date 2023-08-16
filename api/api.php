@@ -41,19 +41,24 @@
         $query = 'INSERT INTO inventario (item_code, descripcion, descripcion_ingles, ubicacion, cantidad, imagen) 
                     VALUES (:item_code, :descripcion, :descripcion_ingles, :ubicacion, :cantidad, :imagen);';
 
-        $statement = $db->prepare($query);
-        $statement->bindParam(':item_code', $_POST['item_code']);
-        $statement->bindParam(':descripcion', $_POST['descripcion']);
-        $statement->bindParam(':descripcion_ingles', $_POST['descripcion_ingles']);
-        $statement->bindParam(':ubicacion', $_POST['ubicacion']);
-        $statement->bindParam(':cantidad', $_POST['cantidad']);
-        $statement->bindParam(':imagen', $_POST['imagen']);
-        $statement->execute();
-
-        if ($statement->rowCount() >= 1) {
-            echo json_encode(['insert' => true]);
-        } else {
-            echo json_decode(['insert' => false]);
+        try {
+            $statement = $db->prepare($query);
+            $statement->bindParam(':item_code', $_POST['item_code']);
+            $statement->bindParam(':descripcion', $_POST['descripcion']);
+            $statement->bindParam(':descripcion_ingles', $_POST['descripcion_ingles']);
+            $statement->bindParam(':ubicacion', $_POST['ubicacion']);
+            $statement->bindParam(':cantidad', $_POST['cantidad']);
+            $statement->bindParam(':imagen', $_POST['imagen']);
+            $statement->execute();
+    
+            if ($statement->rowCount() >= 1) {
+                echo json_encode(['insert' => true]);
+            } else {
+                echo json_decode(['insert' => false]);
+            }
+        }
+        catch (PDOException $e) {
+            echo json_encode(['insert' => $e->getMessage()]);
         }
     }
 
