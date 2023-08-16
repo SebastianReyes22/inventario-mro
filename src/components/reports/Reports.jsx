@@ -8,13 +8,13 @@ export const Reports = () => {
 
   const [inventory, setInventory] = useState([]);
 
-  const [wait, setWait] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const getInventory = async () => {
     let formData = new FormData();
     formData.append('option', 'inventario');
 
-    setWait(true);
+    setIsLoading(true);
 
     await axios
       .post(URI, formData)
@@ -30,7 +30,7 @@ export const Reports = () => {
         console.log(error);
       });
 
-    setWait(false);
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -41,11 +41,11 @@ export const Reports = () => {
     <div>
       <Row className='mb-4'>
         <Col className='col-2'>
-          <ButtonDownload inventory={inventory} />
+          <ButtonDownload inventory={inventory} isLoading={isLoading} />
         </Col>
       </Row>
       <Row className='scrollable-container'>
-        {wait ? (
+        {isLoading ? (
           <div className='spinner-container'>
             <Spinner animation='border' role='status'>
               <span className='visually-hidden'>Loading...</span>

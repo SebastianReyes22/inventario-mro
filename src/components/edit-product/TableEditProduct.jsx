@@ -56,10 +56,12 @@ export const TableEditProduct = props => {
                 </Button>
               </div>
             </td>
-            <td className='d-flex justify-content-center'>
-              <Button variant='danger' onClick={e => props.handleDelete(e, item)}>
-                -
-              </Button>
+            <td>
+              <div className='d-flex justify-content-center'>
+                <Button variant='danger' onClick={e => props.handleDelete(e, item)}>
+                  -
+                </Button>
+              </div>
             </td>
           </tr>
         ))}

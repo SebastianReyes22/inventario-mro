@@ -36,29 +36,30 @@ export const ButtonDownload = props => {
       },
     ];
 
+    const headerRow = sheet.getRow(1);
+    headerRow.eachCell((cell, colNumber) => {
+      cell.font = { bold: true };
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'FFFFCC00' },
+      };
+    });
+
     props.inventory.forEach(item => {
-      const {
-        item_code,
-        descripcion_ingles,
-        descripcion,
-        ubicacion,
-        // imagen,
-        cantidad,
-      } = item;
+      const { item_code, descripcion_ingles, descripcion, ubicacion, cantidad } = item;
 
-      // // Remove the 'data:image/jpeg;base64,' prefix from the image data
-      // const imageData = imagen
-      //   ? imagen.replace(/^data:image\/(png|jpeg|jpg);base64,/, '')
-      //   : null;
-
-      // Add the image as a base64 data directly to the 'imagen' column (without the 'data:image/jpeg;base64,' prefix)
       sheet.addRow({
         code: item_code,
         description: descripcion_ingles,
         descripcion,
         ubicacion,
-        // imagen: imageData ? { base64: imageData } : null,
         cantidad,
+      });
+
+      // auto size the column width to fit the content
+      sheet.columns.forEach(column => {
+        column.width = column.header.length < 12 ? 12 : column.header.length;
       });
     });
 
@@ -80,7 +81,7 @@ export const ButtonDownload = props => {
 
   return (
     <div className='d-grid gap-2'>
-      <Button variant='success' onClick={exportFile}>
+      <Button variant='success' onClick={exportFile} disabled={props.isLoading}>
         <FontAwesomeIcon icon={faDownload} />
       </Button>
     </div>

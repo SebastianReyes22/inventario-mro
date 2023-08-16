@@ -10,7 +10,7 @@ export const FindItem = () => {
   const [product, setProduct] = useState('');
   const [inventory, setInventory] = useState([]);
 
-  const [wait, setWait] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -21,7 +21,7 @@ export const FindItem = () => {
     formData.append('descripcion', product);
     formData.append('descripcion_ingles', product);
 
-    setWait(true);
+    setIsLoading(true);
 
     await axios
       .post(URI, formData)
@@ -36,7 +36,7 @@ export const FindItem = () => {
         console.log(error, 'error');
       });
 
-    setWait(false);
+    setIsLoading(false);
   };
 
   return (
@@ -53,13 +53,13 @@ export const FindItem = () => {
           </Col>
           <Col className='col-2'>
             <div className='d-grid gap-2'>
-              <Button variant='primary' type='submit'>
+              <Button variant='primary' type='submit' disabled={isLoading}>
                 <FontAwesomeIcon icon={faSearch} />
               </Button>
             </div>
           </Col>
         </Row>
-        {wait ? (
+        {isLoading ? (
           <div className='spinner-container'>
             <Spinner animation='border' role='status'>
               <span className='visually-hidden'>Cargando...</span>

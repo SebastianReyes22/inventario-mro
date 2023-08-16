@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { TableEditProduct } from './TableEditProduct';
-import { Button, Col, Form, Row, Table } from 'react-bootstrap';
+import { Button, Col, Form, Row, Spinner, Table } from 'react-bootstrap';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useUserAuth } from '../../context/UserAuthContext';
@@ -15,6 +15,8 @@ export const EditProduct = () => {
   const [itemQuantities, setItemQuantities] = useState({});
   const [itemObservations, setItemObservations] = useState({});
 
+  const [isLoading, setIsLoading] = useState(false);
+
   // Search product
   const handleSubmit = async e => {
     e.preventDefault();
@@ -24,6 +26,8 @@ export const EditProduct = () => {
     formData.append('item_code', product);
     formData.append('descripcion', product);
     formData.append('descripcion_ingles', product);
+
+    setIsLoading(true);
 
     await axios
       .post(URI, formData)
@@ -37,6 +41,8 @@ export const EditProduct = () => {
       .catch(error => {
         console.log(error, 'error');
       });
+
+    setIsLoading(false);
   };
 
   // Add product to inventory
@@ -109,71 +115,30 @@ export const EditProduct = () => {
           </Col>
           <Col className='col-2'>
             <div className='d-grid gap-2'>
-              <Button variant='primary' type='submit'>
+              <Button variant='primary' type='submit' disabled={isLoading}>
                 <FontAwesomeIcon icon={faSearch} />
               </Button>
             </div>
           </Col>
         </Row>
-        <Row className='mt-4'>
-          <TableEditProduct
-            inventory={inventory}
-            itemQuantities={itemQuantities}
-            setItemQuantities={setItemQuantities}
-            itemObservations={itemObservations}
-            setItemObservations={setItemObservations}
-            handleAdd={handleAdd}
-            handleDelete={handleDelete}
-          />
-          {/* <Table striped bordered hover>
-            <thead>
-              <tr>
-                <th style={{ width: '10%' }}>Item Code</th>
-                <th style={{ width: '25%' }}>Descripción (Español)</th>
-                <th style={{ width: '25%' }}>Descripción (Ingles)</th>
-                <th style={{ width: '10%' }}>Stock</th>
-                <th style={{ width: '15%' }}>Cantidad a modificar</th>
-                <th style={{ width: '7%' }}>Añadir</th>
-                <th style={{ width: '7%' }}>Quitar</th>
-              </tr>
-            </thead>
-            <tbody>
-              {inventory.map(item => (
-                <tr key={item.id_inventario}>
-                  <td>{item.item_code}</td>
-                  <td>{item.descripcion}</td>
-                  <td>{item.descripcion_ingles}</td>
-                  <td>{item.cantidad}</td>
-                  <td>
-                    <Form.Control
-                      type='number'
-                      value={itemQuantities[item.id_inventario] || 0}
-                      min={0}
-                      onChange={e => {
-                        const newQuantity = parseInt(e.target.value);
-                        setItemQuantities(prevQuantities => ({
-                          ...prevQuantities,
-                          [item.id_inventario]: isNaN(newQuantity) ? 0 : newQuantity,
-                        }));
-                      }}
-                    />
-                  </td>
-                  <td>
-                    <div className='d-flex justify-content-center'>
-                      <Button variant='primary' onClick={e => handleAdd(e, item)}>
-                        +
-                      </Button>
-                    </div>
-                  </td>
-                  <td className='d-flex justify-content-center'>
-                    <Button variant='danger' onClick={e => handleDelete(e, item)}>
-                      -
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table> */}
+        <Row className='mt-4 scrollable-container'>
+          {isLoading ? (
+            <div className='spinner-container'>
+              <Spinner animation='border' role='status'>
+                <span className='visually-hidden'>Loading...</span>
+              </Spinner>
+            </div>
+          ) : (
+            <TableEditProduct
+              inventory={inventory}
+              itemQuantities={itemQuantities}
+              setItemQuantities={setItemQuantities}
+              itemObservations={itemObservations}
+              setItemObservations={setItemObservations}
+              handleAdd={handleAdd}
+              handleDelete={handleDelete}
+            />
+          )}
         </Row>
       </Form>
     </div>

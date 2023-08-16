@@ -9,15 +9,15 @@ export const NewUserFirebase = () => {
   const [password, setPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
 
-  const [wait, setWait] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSignUp = async e => {
     e.preventDefault();
 
     try {
-      setWait(true);
+      setIsLoading(true);
       await newUser(email, password, displayName);
-      setWait(false);
+      setIsLoading(false);
     } catch (err) {
       console.log('Error', err);
     }
@@ -25,7 +25,7 @@ export const NewUserFirebase = () => {
 
   return (
     <div>
-      {wait ? (
+      {isLoading ? (
         <div className='spinner-container'>
           <Spinner animation='border' role='status'>
             <span className='visually-hidden'>Loading...</span>
