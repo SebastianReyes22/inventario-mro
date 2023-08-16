@@ -60,6 +60,11 @@ body {
     }
 }
 
+.container-box {
+    padding: 20px;
+    overflow: auto;
+}
+
 .card-header {
     font-size: 28px;
     text-align: center;
@@ -74,4 +79,17 @@ body {
 .table-img {
     width: 100px;
     height: 70px;
+}
+
+.scrollable-container {
+    padding: 10px;
+    overflow: auto;
+    max-height: 500px;
+}
+
+.spinner-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100px;
 }

@@ -1,16 +1,20 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { ButtonDownload, TableReports } from './';
-import { Col, Row } from 'react-bootstrap';
+import { Col, Row, Spinner } from 'react-bootstrap';
 
 export const Reports = () => {
   const URI = import.meta.env.VITE_APP_API;
 
   const [inventory, setInventory] = useState([]);
 
+  const [wait, setWait] = useState(false);
+
   const getInventory = async () => {
     let formData = new FormData();
     formData.append('option', 'inventario');
+
+    setWait(true);
 
     await axios
       .post(URI, formData)
@@ -25,6 +29,8 @@ export const Reports = () => {
       .catch(error => {
         console.log(error);
       });
+
+    setWait(false);
   };
 
   useEffect(() => {
@@ -38,8 +44,16 @@ export const Reports = () => {
           <ButtonDownload inventory={inventory} />
         </Col>
       </Row>
-      <Row>
-        <TableReports inventory={inventory} />
+      <Row className='scrollable-container'>
+        {wait ? (
+          <div className='spinner-container'>
+            <Spinner animation='border' role='status'>
+              <span className='visually-hidden'>Loading...</span>
+            </Spinner>
+          </div>
+        ) : (
+          <TableReports inventory={inventory} />
+        )}
       </Row>
     </div>
   );

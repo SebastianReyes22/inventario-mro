@@ -26,9 +26,11 @@ export const NewUserFirebase = () => {
   return (
     <div>
       {wait ? (
-        <Spinner animation='border' role='status'>
-          <span className='visually-hidden'>Loading...</span>
-        </Spinner>
+        <div className='spinner-container'>
+          <Spinner animation='border' role='status'>
+            <span className='visually-hidden'>Loading...</span>
+          </Spinner>
+        </div>
       ) : (
         <Form onSubmit={handleSignUp}>
           <Row className='mb-2'>
