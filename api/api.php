@@ -94,7 +94,8 @@
     // Agrega producto en el inventario y registra usuario que hizo movimiento
     if ($_POST['option'] == 'addProduct') {
         $updateSql = "UPDATE inventario SET cantidad = cantidad + :cantidad WHERE id_inventario = :id_inventario;";
-        $insertSql = "INSERT INTO movimientos (usuario, item, comentario, fecha_movimiento) VALUES (:usuario, :item, :comentario, :fecha_movimiento);";
+        $insertSql = "INSERT INTO movimientos (usuario, item, tipo_movimiento, cantidad, comentario, fecha_movimiento) 
+                        VALUES (:usuario, :item, :tipo_movimiento, :cantidad, :comentario, :fecha_movimiento);";
     
         $updateStatement = $db->prepare($updateSql);
         $updateStatement->bindParam(':cantidad', $_POST['cantidad']);
@@ -104,6 +105,8 @@
         $insertStatement = $db->prepare($insertSql);
         $insertStatement->bindParam(':usuario', $_POST['usuario']);
         $insertStatement->bindParam(':item', $_POST['item']);
+        $insertStatement->bindParam(':tipo_movimiento', $_POST['tipo_movimiento']);
+        $insertStatement->bindParam(':cantidad', $_POST['cantidad']);
         $insertStatement->bindParam(':comentario', $_POST['comentario']);
         $insertStatement->bindParam(':fecha_movimiento', $_POST['fecha_movimiento']);
         $insertResult = $insertStatement->execute();
@@ -118,7 +121,8 @@
     // Elimina producto del inventario y registra usuario que hizo movimiento
     if ($_POST['option'] == 'deleteProduct') {
         $updateSql = "UPDATE inventario SET cantidad = cantidad - :cantidad WHERE id_inventario = :id_inventario;";
-        $insertSql = "INSERT INTO movimientos (usuario, item, comentario, fecha_movimiento) VALUES (:usuario, :item, :comentario, :fecha_movimiento);";
+        $insertSql = "INSERT INTO movimientos (usuario, item, tipo_movimiento, cantidad, comentario, fecha_movimiento) 
+                        VALUES (:usuario, :item, :tipo_movimiento, :cantidad, :comentario, :fecha_movimiento);";
 
         $updateStatement = $db->prepare($updateSql);
         $updateStatement->bindParam(':cantidad', $_POST['cantidad']);
@@ -128,6 +132,8 @@
         $insertStatement = $db->prepare($insertSql);
         $insertStatement->bindParam(':usuario', $_POST['usuario']);
         $insertStatement->bindParam(':item', $_POST['item']);
+        $insertStatement->bindParam(':tipo_movimiento', $_POST['tipo_movimiento']);
+        $insertStatement->bindParam(':cantidad', $_POST['cantidad']);
         $insertStatement->bindParam(':comentario', $_POST['comentario']);
         $insertStatement->bindParam(':fecha_movimiento', $_POST['fecha_movimiento']);
         $insertResult = $insertStatement->execute();
