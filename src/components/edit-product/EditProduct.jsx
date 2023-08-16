@@ -47,6 +47,9 @@ export const EditProduct = () => {
 
   // Add product to inventory
   const handleAdd = async (e, item) => {
+    if (itemObservations[item.id_inventario] === undefined)
+      itemObservations[item.id_inventario] = 'Sin comentario agregado';
+
     let formData = new FormData();
     formData.append('option', 'addProduct');
     formData.append('id_inventario', item.id_inventario);
