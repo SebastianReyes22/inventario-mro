@@ -1,4 +1,4 @@
-import { FindItem } from '../../components/find-item';
+import { FindItem } from '../../components/item';
 import { Layout } from '../../components/ui';
 import { Card } from 'react-bootstrap';
 

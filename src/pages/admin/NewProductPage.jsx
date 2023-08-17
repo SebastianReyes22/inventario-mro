@@ -1,4 +1,4 @@
-import { NewProduct } from '../../components/new-product/NewProduct';
+import { NewProduct } from '../../components/item';
 import { Layout } from '../../components/ui';
 import { Card } from 'react-bootstrap';
 

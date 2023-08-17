@@ -1,6 +1,6 @@
 import { Card } from 'react-bootstrap';
 import { Layout } from '../../components/ui';
-import { EditProduct } from '../../components/edit-product';
+import { EditProduct } from '../../components/item';
 
 export const EditProductPage = () => {
   return (
