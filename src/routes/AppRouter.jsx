@@ -1,8 +1,10 @@
 import { Route, Routes } from 'react-router-dom';
 import {
   CreateNewUserPage,
+  DeleteItemPage,
   EditProductPage,
   LoginPage,
+  MovimientosPage,
   NewProductPage,
   ReportPage,
 } from '../pages/admin';
@@ -42,6 +44,22 @@ export const AppRouter = () => {
         element={
           <ProtectedRoutes>
             <EditProductPage />
+          </ProtectedRoutes>
+        }
+      />
+      <Route
+        path='/movimientos'
+        element={
+          <ProtectedRoutes>
+            <MovimientosPage />
+          </ProtectedRoutes>
+        }
+      />
+      <Route
+        path='/eliminar'
+        element={
+          <ProtectedRoutes>
+            <DeleteItemPage />
           </ProtectedRoutes>
         }
       />

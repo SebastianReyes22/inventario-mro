@@ -15,7 +15,7 @@
     if ($_POST['option'] == 'inventario') {
         $array = [];
         $x = 0;
-        $query = "SELECT * FROM inventario;";
+        $query = "SELECT * FROM inventario ORDER BY item_code ASC;";
 
         $statement = $db->prepare($query);
         $statement->execute();
@@ -169,6 +169,36 @@
             echo json_encode($array);
         } else {
             echo json_encode(['locations' => false]);
+        }
+    }
+
+    // Todo el inventario
+    if ($_POST['option'] == 'movimientos') {
+        $array = [];
+        $x = 0;
+        $query = "SELECT * FROM movimientos WHERE fecha_movimiento BETWEEN :fechaInicial AND :fechaFinal
+                    AND usuario LIKE CONCAT('%', :usuario '%') ORDER BY fecha_movimiento ASC;";
+
+        $statement = $db->prepare($query);
+        $statement->bindParam(':fechaInicial', $_POST['fechaInicial']);
+        $statement->bindParam(':fechaFinal', $_POST['fechaFinal']);
+        $statement->bindParam(':usuario', $_POST['usuario']);
+        $statement->execute();
+
+        if ($statement->rowCount() >= 1) {
+            while ($row = $statement->fetch()) {
+                $array[$x]['id_movimiento'] = $row['id_movimiento'];
+                $array[$x]['usuario'] = $row['usuario'];
+                $array[$x]['item'] = $row['item'];
+                $array[$x]['tipo_movimiento'] = $row['tipo_movimiento'];
+                $array[$x]['cantidad'] = $row['cantidad'];
+                $array[$x]['comentario'] = $row['comentario'];
+                $array[$x]['fecha_movimiento'] = $row['fecha_movimiento'];
+                $x++;
+            }
+            echo json_encode($array);
+        } else {
+            echo json_encode(['movimiento' => false]);
         }
     }
 ?>

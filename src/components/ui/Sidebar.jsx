@@ -1,5 +1,5 @@
 import { faEdit, faFileAlt } from '@fortawesome/free-regular-svg-icons';
-import { faAdd, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faAdd, faSearch, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button } from 'react-bootstrap';
 import { NavLink, useLocation } from 'react-router-dom';
@@ -31,6 +31,18 @@ export const Sidebar = () => {
       label: 'Buscar Producto',
       to: '/buscar',
       icon: faSearch,
+    },
+    {
+      id: 5,
+      label: 'Reporte de Movimientos',
+      to: '/movimientos',
+      icon: faFileAlt,
+    },
+    {
+      id: 6,
+      label: 'Eliminar item',
+      to: '/eliminar',
+      icon: faTrash,
     },
   ];
 
