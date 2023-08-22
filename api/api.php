@@ -27,6 +27,7 @@
                 $array[$x]['descripcion'] = $row['descripcion'];
                 $array[$x]['descripcion_ingles'] = $row['descripcion_ingles'];
                 $array[$x]['ubicacion'] = $row['ubicacion'];
+                $array[$x]['nivel'] = $row['nivel'];
                 $array[$x]['cantidad'] = $row['cantidad'];
                 $array[$x]['imagen'] = $row['imagen'];
                 $x++;
@@ -38,8 +39,8 @@
     }
 
     if ($_POST['option'] == 'insert') {
-        $query = 'INSERT INTO inventario (item_code, descripcion, descripcion_ingles, ubicacion, cantidad, imagen) 
-                    VALUES (:item_code, :descripcion, :descripcion_ingles, :ubicacion, :cantidad, :imagen);';
+        $query = 'INSERT INTO inventario (item_code, descripcion, descripcion_ingles, ubicacion, nivel, cantidad, imagen) 
+                    VALUES (:item_code, :descripcion, :descripcion_ingles, :ubicacion, :nivel, :cantidad, :imagen);';
 
         try {
             $statement = $db->prepare($query);
@@ -47,6 +48,7 @@
             $statement->bindParam(':descripcion', $_POST['descripcion']);
             $statement->bindParam(':descripcion_ingles', $_POST['descripcion_ingles']);
             $statement->bindParam(':ubicacion', $_POST['ubicacion']);
+            $statement->bindParam(':nivel', $_POST['nivel']);
             $statement->bindParam(':cantidad', $_POST['cantidad']);
             $statement->bindParam(':imagen', $_POST['imagen']);
             $statement->execute();
@@ -169,6 +171,29 @@
             echo json_encode($array);
         } else {
             echo json_encode(['locations' => false]);
+        }
+    }
+
+    // Todos los niveles
+    if ($_POST['option'] == 'getLevels') {
+        $array = [];
+        $x = 0;
+    
+        $sql = "SELECT * FROM niveles;";
+    
+        $statement = $db->prepare($sql);
+        
+        $statement->execute();
+    
+        if ($statement->rowCount() >= 1) {
+            while ($row = $statement->fetch()) {
+                $array[$x]['id_nivel'] = $row['id_nivel'];
+                $array[$x]['nombre_nivel'] = $row['nombre_nivel'];
+                $x++;
+            }
+            echo json_encode($array);
+        } else {
+            echo json_encode(['levels' => false]);
         }
     }
 

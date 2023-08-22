@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import axios from 'axios';
-import { Button, Col, Form, Row, Table } from 'react-bootstrap';
-import { faDownload, faSearch } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ButtonDownloadMovimientos } from './ButtonDownloadMovimientos';
+import { Button, Col, Form, Row, Table } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 export const Movimientos = () => {
   const URI = import.meta.env.VITE_APP_API;
@@ -16,6 +16,11 @@ export const Movimientos = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async () => {
+    if (startDate === '' || endDate === '') {
+      alert('Por favor selecciona un rango de fechas');
+      return;
+    }
+
     let formData = new FormData();
     formData.append('option', 'movimientos');
     formData.append('fechaInicial', startDate);

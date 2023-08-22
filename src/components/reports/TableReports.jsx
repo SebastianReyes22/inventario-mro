@@ -23,6 +23,7 @@ export const TableReports = props => {
             <th>Description (English)</th>
             <th>Descripción (Español)</th>
             <th>Ubicación</th>
+            <th>Nivel</th>
             <th>Imagen</th>
             <th>Cantidad</th>
           </tr>
@@ -34,6 +35,7 @@ export const TableReports = props => {
               <td>{item.descripcion_ingles}</td>
               <td>{item.descripcion}</td>
               <td>{item.ubicacion}</td>
+              <td>{item.nivel}</td>
               <td className='td-img'>
                 <a href='#' onClick={() => openModal(item.imagen)}>
                   <img className='table-img' src={item.imagen} alt={item.item_code} />

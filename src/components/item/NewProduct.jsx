@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave } from '@fortawesome/free-regular-svg-icons';
-import { InputLocation } from './InputLocation';
+import { InputLevel, InputLocation } from './';
 
 export const NewProduct = () => {
   const URI = import.meta.env.VITE_APP_API;
@@ -13,6 +13,8 @@ export const NewProduct = () => {
   const [descriptionEnglish, setDescriptionEnglish] = useState('');
   const [location, setLocation] = useState([]);
   const [locationSelected, setLocationSelected] = useState('');
+  const [level, setLevel] = useState([]);
+  const [levelSelected, setLevelSelected] = useState('');
   const [quantity, setQuantity] = useState('');
 
   const convertToBase64 = files => {
@@ -31,6 +33,7 @@ export const NewProduct = () => {
       itemCode === '' ||
       description === '' ||
       locationSelected === '' ||
+      levelSelected === '' ||
       quantity === '' ||
       descriptionEnglish === '' ||
       document.querySelector('input[type="file"]').files.length === 0
@@ -49,6 +52,7 @@ export const NewProduct = () => {
     formData.append('descripcion', description);
     formData.append('descripcion_ingles', descriptionEnglish);
     formData.append('ubicacion', locationSelected);
+    formData.append('nivel', levelSelected);
     formData.append('cantidad', quantity);
     formData.append('imagen', base64);
 
@@ -91,6 +95,17 @@ export const NewProduct = () => {
             />
           </Col>
           <Col>
+            <InputLevel
+              URI={URI}
+              level={level}
+              setLevel={setLevel}
+              levelSelected={levelSelected}
+              setLevelSelected={setLevelSelected}
+            />
+          </Col>
+        </Row>
+        <Row className='mt-4 mb-2'>
+          <Col>
             <Form.Label>Cantidad</Form.Label>
             <Form.Control
               type='number'
@@ -99,8 +114,6 @@ export const NewProduct = () => {
               onChange={e => setQuantity(e.target.value)}
             />
           </Col>
-        </Row>
-        <Row className='mt-4 mb-2'>
           <Col>
             <Form.Label>Descripción (Ingles)</Form.Label>
             <Form.Control
