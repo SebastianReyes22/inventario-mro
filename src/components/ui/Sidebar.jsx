@@ -38,12 +38,12 @@ export const Sidebar = () => {
       to: '/movimientos',
       icon: faFileAlt,
     },
-    {
-      id: 6,
-      label: 'Eliminar item',
-      to: '/eliminar',
-      icon: faTrash,
-    },
+    // {
+    //   id: 6,
+    //   label: 'Eliminar item',
+    //   to: '/eliminar',
+    //   icon: faTrash,
+    // },
   ];
 
   const { pathname } = useLocation();

@@ -74,6 +74,7 @@ export const FindItem = () => {
                   <th>Descripción (Español)</th>
                   <th>Descripción (Ingles)</th>
                   <th>Ubicación</th>
+                  <th>Nivel</th>
                   <th>Cantidad</th>
                   <th>Imagen</th>
                 </tr>
@@ -85,6 +86,7 @@ export const FindItem = () => {
                     <td>{item.descripcion_ingles}</td>
                     <td>{item.descripcion}</td>
                     <td>{item.ubicacion}</td>
+                    <td>{item.nivel}</td>
                     <td>{item.cantidad}</td>
                     <td className='td-img'>
                       <img className='table-img' src={item.imagen} alt={item.nombre} />

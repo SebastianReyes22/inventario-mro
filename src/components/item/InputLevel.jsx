@@ -32,7 +32,7 @@ export const InputLevel = props => {
       <Form.Select
         value={props.levelSelected}
         onChange={e => props.setLevelSelected(e.target.value)}>
-        <option value=''>Seleccione ubicación</option>
+        <option value=''>Seleccione nivel</option>
         {props.level.map(item => (
           <option key={item.id_nivel} value={item.nombre_nivel}>
             {item.nombre_nivel}
