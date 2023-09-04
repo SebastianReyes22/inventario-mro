@@ -1,19 +1,18 @@
 import axios from 'axios';
 import { useState } from 'react';
-import { Row } from 'react-bootstrap';
 import { FormSearch, ModalImage, SpinnerLoading } from '../ui';
-import { TableFindItem } from './tables';
+import { TableEditDataBase } from './tables';
 
-export const FindItem = () => {
+export const EditDataBase = () => {
   const URI = import.meta.env.VITE_APP_API;
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const [product, setProduct] = useState('');
   const [inventory, setInventory] = useState([]);
 
   const [showModal, setShowModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState('');
-
-  const [isLoading, setIsLoading] = useState(false);
 
   const openModal = image => {
     setSelectedImage(image);
@@ -28,17 +27,15 @@ export const FindItem = () => {
     e.preventDefault();
 
     let formData = new FormData();
-    formData.append('option', 'findProduct');
+    formData.append('option', 'findSingleProduct');
     formData.append('item_code', product);
-    formData.append('descripcion', product);
-    formData.append('descripcion_ingles', product);
 
     setIsLoading(true);
 
     await axios
       .post(URI, formData)
       .then(response => {
-        if (response.data.find === false) {
+        if (response.data.findSingle === false) {
           alert('Error, no se pudo encontrar el producto');
         } else {
           setInventory(response.data);
@@ -60,10 +57,10 @@ export const FindItem = () => {
       {isLoading ? (
         <SpinnerLoading />
       ) : (
-        <Row className='mt-4 scrollable-container'>
-          <TableFindItem inventory={inventory} openModal={openModal} />
+        <div>
+          <TableEditDataBase inventory={inventory} openModal={openModal} URI={URI} />
           <ModalImage show={showModal} onHide={closeModal} imageSrc={selectedImage} />
-        </Row>
+        </div>
       )}
     </FormSearch>
   );

@@ -2,6 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import {
   CreateNewUserPage,
   DeleteItemPage,
+  EditDataBasePage,
   EditProductPage,
   LoginPage,
   MovimientosPage,
@@ -60,6 +61,14 @@ export const AppRouter = () => {
         element={
           <ProtectedRoutes>
             <DeleteItemPage />
+          </ProtectedRoutes>
+        }
+      />
+      <Route
+        path='/item-db'
+        element={
+          <ProtectedRoutes>
+            <EditDataBasePage />
           </ProtectedRoutes>
         }
       />

@@ -1,10 +1,9 @@
-import { useState } from 'react';
 import axios from 'axios';
-import { TableEditProduct } from './TableEditProduct';
-import { Button, Col, Form, Row, Spinner, Table } from 'react-bootstrap';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useState } from 'react';
 import { useUserAuth } from '../../context/UserAuthContext';
+import { Row } from 'react-bootstrap';
+import { TableEditProduct } from './tables';
+import { FormSearch, SpinnerLoading } from '../ui';
 
 export const EditProduct = () => {
   const URI = import.meta.env.VITE_APP_API;
@@ -105,45 +104,26 @@ export const EditProduct = () => {
   };
 
   return (
-    <div>
-      <Form onSubmit={handleSubmit}>
-        <Row>
-          <Col className='col-10'>
-            <Form.Control
-              type='text'
-              placeholder='item code, nombre del producto o descripción'
-              value={product}
-              onChange={e => setProduct(e.target.value)}
-            />
-          </Col>
-          <Col className='col-2'>
-            <div className='d-grid gap-2'>
-              <Button variant='primary' type='submit' disabled={isLoading}>
-                <FontAwesomeIcon icon={faSearch} />
-              </Button>
-            </div>
-          </Col>
-        </Row>
-        <Row className='mt-4 scrollable-container'>
-          {isLoading ? (
-            <div className='spinner-container'>
-              <Spinner animation='border' role='status'>
-                <span className='visually-hidden'>Loading...</span>
-              </Spinner>
-            </div>
-          ) : (
-            <TableEditProduct
-              inventory={inventory}
-              itemQuantities={itemQuantities}
-              setItemQuantities={setItemQuantities}
-              itemObservations={itemObservations}
-              setItemObservations={setItemObservations}
-              handleAdd={handleAdd}
-              handleDelete={handleDelete}
-            />
-          )}
-        </Row>
-      </Form>
-    </div>
+    <FormSearch
+      handleSubmit={handleSubmit}
+      product={product}
+      setProduct={setProduct}
+      isLoading={isLoading}>
+      <Row className='mt-4 scrollable-container'>
+        {isLoading ? (
+          <SpinnerLoading />
+        ) : (
+          <TableEditProduct
+            inventory={inventory}
+            itemQuantities={itemQuantities}
+            setItemQuantities={setItemQuantities}
+            itemObservations={itemObservations}
+            setItemObservations={setItemObservations}
+            handleAdd={handleAdd}
+            handleDelete={handleDelete}
+          />
+        )}
+      </Row>
+    </FormSearch>
   );
 };

@@ -38,12 +38,18 @@ export const Sidebar = () => {
       to: '/movimientos',
       icon: faFileAlt,
     },
-    // {
-    //   id: 6,
-    //   label: 'Eliminar item',
-    //   to: '/eliminar',
-    //   icon: faTrash,
-    // },
+    {
+      id: 6,
+      label: 'Eliminar item',
+      to: '/eliminar',
+      icon: faTrash,
+    },
+    {
+      id: 7,
+      label: 'Modificar item en la base de datos',
+      to: '/item-db',
+      icon: faEdit,
+    },
   ];
 
   const { pathname } = useLocation();

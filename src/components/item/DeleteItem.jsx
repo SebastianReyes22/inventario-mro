@@ -1,102 +1,100 @@
-import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Button, Form, Table } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faSave, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { useState } from 'react';
+import { FormSearch, ModalImage, SpinnerLoading } from '../ui';
+import { TableDeleteItem } from './tables';
 
 export const DeleteItem = () => {
-  // const URI = import.meta.env.VITE_APP_API;
-  // const [inventory, setInventory] = useState([]);
-  // const [isLoading, setIsLoading] = useState(false);
+  const URI = import.meta.env.VITE_APP_API;
 
-  // const [itemCode, setItemCode] = useState('');
+  const [product, setProduct] = useState('');
+  const [inventory, setInventory] = useState([]);
 
-  // const getInventory = async () => {
-  //   let formData = new FormData();
-  //   formData.append('option', 'inventario');
+  const [isLoading, setIsLoading] = useState(false);
 
-  //   setIsLoading(true);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedImage, setSelectedImage] = useState('');
 
-  //   await axios
-  //     .post(URI, formData)
-  //     .then(response => {
-  //       if (response.data.inventory === false) {
-  //         setInventory([]);
-  //         console.log('Sin items');
-  //       } else {
-  //         setInventory(response.data);
-  //       }
-  //     })
-  //     .catch(error => {
-  //       console.log(error);
-  //     });
+  const openModal = image => {
+    setSelectedImage(image);
+    setShowModal(true);
+  };
 
-  //   setIsLoading(false);
-  // };
+  const closeModal = () => {
+    setShowModal(false);
+  };
 
-  // useEffect(() => {
-  //   getInventory();
-  // }, []);
+  const handleSubmit = async e => {
+    e.preventDefault();
+
+    let formData = new FormData();
+    formData.append('option', 'findSingleProduct');
+    formData.append('item_code', product);
+
+    setIsLoading(true);
+
+    await axios
+      .post(URI, formData)
+      .then(response => {
+        if (response.data.findSingle === false) {
+          alert('Error, no se pudo encontrar el producto');
+        } else {
+          setInventory(response.data);
+        }
+      })
+      .catch(error => {
+        console.log(error, 'error');
+      });
+
+    setIsLoading(false);
+  };
+
+  const handleDelete = async (e, item) => {
+    e.preventDefault();
+
+    if (window.confirm('¿Realmente quieres eliminar este producto?')) {
+      let formData = new FormData();
+      formData.append('option', 'deleteProductDB');
+      formData.append('id_inventario', item.id_inventario);
+
+      setIsLoading(true);
+
+      await axios
+        .post(URI, formData)
+        .then(response => {
+          if (response.data.deleteProductDB === false) {
+            alert('Error, no se pudo eliminar el producto');
+          } else {
+            alert('Producto eliminado correctamente');
+            setInventory([]);
+            setProduct('');
+          }
+        })
+        .catch(error => {
+          console.log(error, 'error');
+        });
+
+      setIsLoading(false);
+    }
+  };
 
   return (
-    // <div className='scrollable-container'>
-    //   <Table striped bordered hover>
-    //     <thead>
-    //       <tr>
-    //         <th>Item Code</th>
-    //         <th>Descripción (Español)</th>
-    //         <th>Descripción (Ingles)</th>
-    //         <th>Ubicación</th>
-    //         <th>Stock</th>
-    //         <th>Imágen</th>
-    //         <th>Guardar</th>
-    //         <th>Editar</th>
-    //         <th>Borrar</th>
-    //       </tr>
-    //     </thead>
-    //     <tbody>
-    //       {inventory.map(item => (
-    //         <tr key={item.id_inventario}>
-    //           <td>
-    //             <Form.Control
-    //               type='text'
-    //               value={item.item_code}
-    //               onChange={e => setItemCode(e.target.value)}
-    //             />
-    //           </td>
-    //           <td>{item.descripcion}</td>
-    //           <td>{item.descripcion_ingles}</td>
-    //           <td>{item.ubicacion}</td>
-    //           <td>{item.cantidad}</td>
-    //           <td className='td-img'>
-    //             <img className='table-img' src={item.imagen} alt={item.item_code} />
-    //           </td>
-    //           <td>
-    //             <Button variant='primary'>
-    //               <FontAwesomeIcon icon={faSave} />
-    //             </Button>
-    //           </td>
-    //           <td>
-    //             <Button variant='warning'>
-    //               <FontAwesomeIcon icon={faEdit} />
-    //             </Button>
-    //           </td>
-    //           <td>
-    //             <Button variant='danger'>
-    //               <FontAwesomeIcon icon={faTrash} />
-    //             </Button>
-    //           </td>
-    //         </tr>
-    //       ))}
-    //     </tbody>
-    //   </Table>
-    // </div>
-    <div className='d-flex justify-content-center'>
-      <img
-        style={{ width: '50%' }}
-        src='https://uploads-ssl.webflow.com/5c471c24395cd54f559228e5/5d1623691e99cd415d15fc95_Page-under-construction_kompuestos.gif'
-        alt='En desarrollo'
-      />
-    </div>
+    <FormSearch
+      handleSubmit={handleSubmit}
+      product={product}
+      setProduct={setProduct}
+      isLoading={isLoading}>
+      {isLoading ? (
+        <SpinnerLoading />
+      ) : (
+        <div>
+          <TableDeleteItem
+            inventory={inventory}
+            handleDelete={handleDelete}
+            openModal={openModal}
+          />
+          <ModalImage show={showModal} onHide={closeModal} imageSrc={selectedImage} />
+        </div>
+      )}
+    </FormSearch>
   );
 };

@@ -1,32 +1,21 @@
-import { useState } from 'react';
-import { Table } from 'react-bootstrap';
-import { ModalImage } from '../ui';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Button, Row, Table } from 'react-bootstrap';
 
-export const TableReports = props => {
-  const [showModal, setShowModal] = useState(false);
-  const [selectedImage, setSelectedImage] = useState('');
-
-  const openModal = image => {
-    setSelectedImage(image);
-    setShowModal(true);
-  };
-
-  const closeModal = () => {
-    setShowModal(false);
-  };
-
+export const TableDeleteItem = props => {
   return (
-    <div>
+    <Row className='mt-4 scrollable-container'>
       <Table striped bordered hover>
         <thead>
           <tr>
             <th>Item Code</th>
-            <th>Description (English)</th>
             <th>Descripción (Español)</th>
+            <th>Descripción (Ingles)</th>
             <th>Ubicación</th>
             <th>Nivel</th>
-            <th>Imagen</th>
             <th>Cantidad</th>
+            <th>Imagen</th>
+            <th>Borrar</th>
           </tr>
         </thead>
         <tbody>
@@ -37,17 +26,23 @@ export const TableReports = props => {
               <td>{item.descripcion}</td>
               <td>{item.ubicacion}</td>
               <td>{item.nivel}</td>
+              <td>{item.cantidad}</td>
               <td className='td-img'>
-                <a href='#' onClick={() => openModal(item.imagen)}>
+                <a href='#' onClick={() => props.openModal(item.imagen)}>
                   <img className='table-img' src={item.imagen} alt={item.item_code} />
                 </a>
               </td>
-              <td>{item.cantidad}</td>
+              <td>
+                <div className='d-grid gap-2'>
+                  <Button variant='danger' onClick={e => props.handleDelete(e, item)}>
+                    <FontAwesomeIcon icon={faTrash} />
+                  </Button>
+                </div>
+              </td>
             </tr>
           ))}
         </tbody>
       </Table>
-      <ModalImage show={showModal} onHide={closeModal} imageSrc={selectedImage} />
-    </div>
+    </Row>
   );
 };

@@ -15,7 +15,7 @@
     if ($_POST['option'] == 'inventario') {
         $array = [];
         $x = 0;
-        $query = "SELECT * FROM inventario ORDER BY item_code ASC;";
+        $query = "SELECT * FROM inventario;";
 
         $statement = $db->prepare($query);
         $statement->execute();
@@ -88,6 +88,7 @@
                 $array[$x]['descripcion'] = $row['descripcion'];
                 $array[$x]['descripcion_ingles'] = $row['descripcion_ingles'];
                 $array[$x]['cantidad'] = $row['cantidad'];
+                $array[$x]['nivel'] = $row['nivel'];
                 $array[$x]['imagen'] = $row['imagen'];
                 $array[$x]['ubicacion'] = $row['ubicacion'];
                 $x++;
@@ -224,6 +225,79 @@
             echo json_encode($array);
         } else {
             echo json_encode(['movimiento' => false]);
+        }
+    }
+
+    // Buscar todo del invenario
+    if ($_POST['option'] == 'findSingleProduct') {
+        $array = [];
+        $x = 0;
+    
+        $sql = "SELECT * FROM inventario WHERE item_code = :item_code;";
+    
+        $statement = $db->prepare($sql);
+    
+        $statement->bindParam(':item_code', $_POST['item_code']);
+        
+        $statement->execute();
+    
+        if ($statement->rowCount() >= 1) {
+            while ($row = $statement->fetch()) {
+                $array[$x]['id_inventario'] = $row['id_inventario'];
+                $array[$x]['item_code'] = $row['item_code'];
+                $array[$x]['descripcion'] = $row['descripcion'];
+                $array[$x]['descripcion_ingles'] = $row['descripcion_ingles'];
+                $array[$x]['cantidad'] = $row['cantidad'];
+                $array[$x]['nivel'] = $row['nivel'];
+                $array[$x]['imagen'] = $row['imagen'];
+                $array[$x]['ubicacion'] = $row['ubicacion'];
+                $x++;
+            }
+            echo json_encode($array);
+        } else {
+            echo json_encode(['findSingle' => false]);
+        }
+    }
+
+    // Borrar item
+    if ($_POST['option'] == 'deleteProductDB') {
+        $query = "DELETE FROM inventario WHERE id_inventario = :id_inventario;";
+
+        try {
+            $statement = $db->prepare($query);
+            $statement->bindParam(':id_inventario', $_POST['id_inventario']);
+            $statement->execute();
+    
+            if ($statement->rowCount() >= 1) {
+                echo json_encode(['deleteProductDB' => true]);
+            } else {
+                echo json_decode(['deleteProductDB' => false]);
+            }
+        }
+        catch (PDOException $e) {
+            echo json_encode(['deleteProductDB' => $e->getMessage()]);
+        }
+    }
+
+    // Actualizar item
+    if ($_POST['option'] == 'updateProductDB') {
+        $query = "UPDATE inventario SET item_code = :item_code, descripcion = :descripcion, descripcion_ingles = :descripcion_ingles,
+                    ubicacion = :ubicacion, nivel = :nivel, cantidad = :cantidad WHERE id_inventario = :id_inventario;";
+    
+        $statement = $db->prepare($query);
+        $statement->bindParam(':item_code', $_POST['item_code']);
+        $statement->bindParam(':descripcion', $_POST['descripcion']);
+        $statement->bindParam(':descripcion_ingles', $_POST['descripcion_ingles']);
+        $statement->bindParam(':ubicacion', $_POST['ubicacion']);
+        $statement->bindParam(':nivel', $_POST['nivel']);
+        $statement->bindParam(':cantidad', $_POST['cantidad']);
+        $statement->bindParam(':id_inventario', $_POST['id_inventario']);
+        $statement->execute();
+
+        if ($statement->rowCount() >= 1) {
+            echo json_encode(['acaca' => true]);
+        } else {
+            echo json_encode(['acaca' => false]);
         }
     }
 ?>
