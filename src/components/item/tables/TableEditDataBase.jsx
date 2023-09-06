@@ -12,23 +12,25 @@ export const TableEditDataBase = props => {
     setIsEditing(true);
     setEditStates({
       ...editStates,
-      [item.item_code]: item.item_code,
-      [item.descripcion]: item.descripcion,
-      [item.descripcion_ingles]: item.descripcion_ingles,
-      [item.ubicacion]: item.ubicacion,
-      [item.nivel]: item.nivel,
-      [item.cantidad]: item.cantidad,
+      [item.id_inventario]: {
+        item_code: item.item_code,
+        descripcion: item.descripcion,
+        descripcion_ingles: item.descripcion_ingles,
+        ubicacion: item.ubicacion,
+        nivel: item.nivel,
+        cantidad: item.cantidad,
+      },
     });
   };
 
   const handleSaveClick = async item => {
     if (
-      editStates[item.item_code] === '' ||
-      editStates[item.descripcion] === '' ||
-      editStates[item.descripcion_ingles] === '' ||
-      editStates[item.ubicacion] === '' ||
-      editStates[item.nivel] === '' ||
-      editStates[item.cantidad] === ''
+      editStates[item.id_inventario].item_code === '' ||
+      editStates[item.id_inventario].descripcion === '' ||
+      editStates[item.id_inventario].descripcion_ingles === '' ||
+      editStates[item.id_inventario].ubicacion === '' ||
+      editStates[item.id_inventario].nivel === '' ||
+      editStates[item.id_inventario].cantidad === ''
     ) {
       alert('Error, no se puede dejar campos vacios');
       return;
@@ -37,12 +39,15 @@ export const TableEditDataBase = props => {
     let formData = new FormData();
     formData.append('option', 'updateProductDB');
     formData.append('id_inventario', item.id_inventario);
-    formData.append('item_code', editStates[item.item_code]);
-    formData.append('descripcion', editStates[item.descripcion]);
-    formData.append('descripcion_ingles', editStates[item.descripcion_ingles]);
-    formData.append('ubicacion', editStates[item.ubicacion]);
-    formData.append('nivel', editStates[item.nivel]);
-    formData.append('cantidad', editStates[item.cantidad]);
+    formData.append('item_code', editStates[item.id_inventario].item_code);
+    formData.append('descripcion', editStates[item.id_inventario].descripcion);
+    formData.append(
+      'descripcion_ingles',
+      editStates[item.id_inventario].descripcion_ingles,
+    );
+    formData.append('ubicacion', editStates[item.id_inventario].ubicacion);
+    formData.append('nivel', editStates[item.id_inventario].nivel);
+    formData.append('cantidad', editStates[item.id_inventario].cantidad);
 
     await axios.post(props.URI, formData).then(response => {
       if (response.data.updateProduct === false) {
@@ -55,6 +60,7 @@ export const TableEditDataBase = props => {
 
     setEditStates({});
     setIsEditing(false);
+    console.log(editStates[item.id_inventario].item_code);
   };
 
   return (
@@ -79,11 +85,14 @@ export const TableEditDataBase = props => {
                 {isEditing ? (
                   <Form.Control
                     type='text'
-                    value={editStates[item.item_code]}
+                    value={editStates[item.id_inventario]?.item_code}
                     onChange={e =>
                       setEditStates({
                         ...editStates,
-                        [item.item_code]: e.target.value,
+                        [item.id_inventario]: {
+                          ...editStates[item.id_inventario],
+                          item_code: e.target.value,
+                        },
                       })
                     }
                   />
@@ -95,11 +104,14 @@ export const TableEditDataBase = props => {
                 {isEditing ? (
                   <Form.Control
                     type='text'
-                    value={editStates[item.descripcion]}
+                    value={editStates[item.id_inventario]?.descripcion}
                     onChange={e =>
                       setEditStates({
                         ...editStates,
-                        [item.descripcion]: e.target.value,
+                        [item.id_inventario]: {
+                          ...editStates[item.id_inventario],
+                          descripcion: e.target.value,
+                        },
                       })
                     }
                   />
@@ -111,11 +123,14 @@ export const TableEditDataBase = props => {
                 {isEditing ? (
                   <Form.Control
                     type='text'
-                    value={editStates[item.descripcion_ingles]}
+                    value={editStates[item.id_inventario]?.descripcion_ingles}
                     onChange={e =>
                       setEditStates({
                         ...editStates,
-                        [item.descripcion_ingles]: e.target.value,
+                        [item.id_inventario]: {
+                          ...editStates[item.id_inventario],
+                          descripcion_ingles: e.target.value,
+                        },
                       })
                     }
                   />
@@ -127,11 +142,14 @@ export const TableEditDataBase = props => {
                 {isEditing ? (
                   <Form.Control
                     type='text'
-                    value={editStates[item.ubicacion]}
+                    value={editStates[item.id_inventario]?.ubicacion}
                     onChange={e =>
                       setEditStates({
                         ...editStates,
-                        [item.ubicacion]: e.target.value,
+                        [item.id_inventario]: {
+                          ...editStates[item.id_inventario],
+                          ubicacion: e.target.value,
+                        },
                       })
                     }
                   />
@@ -143,11 +161,14 @@ export const TableEditDataBase = props => {
                 {isEditing ? (
                   <Form.Control
                     type='text'
-                    value={editStates[item.nivel]}
+                    value={editStates[item.id_inventario]?.nivel}
                     onChange={e =>
                       setEditStates({
                         ...editStates,
-                        [item.nivel]: e.target.value,
+                        [item.id_inventario]: {
+                          ...editStates[item.id_inventario],
+                          nivel: e.target.value,
+                        },
                       })
                     }
                   />
@@ -160,11 +181,14 @@ export const TableEditDataBase = props => {
                   <Form.Control
                     type='number'
                     min={0}
-                    value={editStates[item.cantidad]}
+                    value={editStates[item.id_inventario]?.cantidad}
                     onChange={e =>
                       setEditStates({
                         ...editStates,
-                        [item.cantidad]: e.target.value,
+                        [item.id_inventario]: {
+                          ...editStates[item.id_inventario],
+                          cantidad: e.target.value,
+                        },
                       })
                     }
                   />
