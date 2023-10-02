@@ -1,4 +1,5 @@
 import { Table } from 'react-bootstrap';
+import { QRCodeGenerator } from '../../ui';
 
 export const TableFindItem = props => {
   return (
@@ -12,6 +13,7 @@ export const TableFindItem = props => {
           <th>Nivel</th>
           <th>Cantidad</th>
           <th>Imagen</th>
+          <th>QR Code</th>
         </tr>
       </thead>
       <tbody>
@@ -27,6 +29,9 @@ export const TableFindItem = props => {
               <a href='#' onClick={() => props.openModal(item.imagen)}>
                 <img className='table-img' src={item.imagen} alt={item.item_code} />
               </a>
+            </td>
+            <td>
+              <QRCodeGenerator qrValue={item.item_code} />
             </td>
           </tr>
         ))}
