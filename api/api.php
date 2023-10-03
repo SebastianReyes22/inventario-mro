@@ -282,7 +282,7 @@
     // Actualizar item
     if ($_POST['option'] == 'updateProductDB') {
         $query = "UPDATE inventario SET item_code = :item_code, descripcion = :descripcion, descripcion_ingles = :descripcion_ingles,
-                    ubicacion = :ubicacion, nivel = :nivel, cantidad = :cantidad WHERE id_inventario = :id_inventario;";
+                    ubicacion = :ubicacion, nivel = :nivel, cantidad = :cantidad, imagen = :imagen WHERE id_inventario = :id_inventario;";
     
         $statement = $db->prepare($query);
         $statement->bindParam(':item_code', $_POST['item_code']);
@@ -291,13 +291,14 @@
         $statement->bindParam(':ubicacion', $_POST['ubicacion']);
         $statement->bindParam(':nivel', $_POST['nivel']);
         $statement->bindParam(':cantidad', $_POST['cantidad']);
+        $statement->bindParam(':imagen', $_POST['imagen']);
         $statement->bindParam(':id_inventario', $_POST['id_inventario']);
         $statement->execute();
 
         if ($statement->rowCount() >= 1) {
-            echo json_encode(['acaca' => true]);
+            echo json_encode(['updateProductDB' => true]);
         } else {
-            echo json_encode(['acaca' => false]);
+            echo json_encode(['updateProductDB' => false]);
         }
     }
 ?>

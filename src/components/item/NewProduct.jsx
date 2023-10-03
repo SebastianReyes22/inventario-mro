@@ -4,6 +4,7 @@ import { Button, Col, Form, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave } from '@fortawesome/free-regular-svg-icons';
 import { InputLevel, InputLocation } from './';
+import { convertToBase64 } from '../ui';
 
 export const NewProduct = () => {
   const URI = import.meta.env.VITE_APP_API;
@@ -16,17 +17,6 @@ export const NewProduct = () => {
   const [level, setLevel] = useState([]);
   const [levelSelected, setLevelSelected] = useState('');
   const [quantity, setQuantity] = useState('');
-
-  const convertToBase64 = files => {
-    return new Promise(resolve => {
-      const reader = new FileReader();
-      reader.readAsDataURL(files[0]);
-      reader.onload = function () {
-        const base64 = reader.result;
-        resolve(base64);
-      };
-    });
-  };
 
   const handleSubmit = async () => {
     if (

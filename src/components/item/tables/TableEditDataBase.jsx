@@ -1,8 +1,9 @@
+import { useState } from 'react';
+import axios from 'axios';
 import { faEdit, faSave } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import axios from 'axios';
-import { useState } from 'react';
 import { Button, Form, Row, Table } from 'react-bootstrap';
+import { convertToBase64 } from '../../ui';
 
 export const TableEditDataBase = props => {
   const [editStates, setEditStates] = useState({});
@@ -19,6 +20,7 @@ export const TableEditDataBase = props => {
         ubicacion: item.ubicacion,
         nivel: item.nivel,
         cantidad: item.cantidad,
+        imagen: item.imagen,
       },
     });
   };
@@ -36,6 +38,14 @@ export const TableEditDataBase = props => {
       return;
     }
 
+    let base64 = '';
+
+    if (document.querySelector('input[type="file"]').files.length === 0) {
+      base64 = editStates[item.id_inventario].imagen;
+    } else {
+      base64 = await convertToBase64(document.querySelector('input[type="file"]').files);
+    }
+
     let formData = new FormData();
     formData.append('option', 'updateProductDB');
     formData.append('id_inventario', item.id_inventario);
@@ -48,6 +58,7 @@ export const TableEditDataBase = props => {
     formData.append('ubicacion', editStates[item.id_inventario].ubicacion);
     formData.append('nivel', editStates[item.id_inventario].nivel);
     formData.append('cantidad', editStates[item.id_inventario].cantidad);
+    formData.append('imagen', base64);
 
     await axios.post(props.URI, formData).then(response => {
       if (response.data.updateProduct === false) {
@@ -60,7 +71,6 @@ export const TableEditDataBase = props => {
 
     setEditStates({});
     setIsEditing(false);
-    console.log(editStates[item.id_inventario].item_code);
   };
 
   return (
@@ -197,9 +207,17 @@ export const TableEditDataBase = props => {
                 )}
               </td>
               <td className='td-img'>
-                <a href='#' onClick={() => props.openModal(item.imagen)}>
-                  <img className='table-img' src={item.imagen} alt={item.item_code} />
-                </a>
+                {isEditing ? (
+                  <Form.Control
+                    type='file'
+                    accept='.jpg, .png, .jpeg'
+                    onChange={e => convertToBase64(e.target.files)}
+                  />
+                ) : (
+                  <a href='#' onClick={() => props.openModal(item.imagen)}>
+                    <img className='table-img' src={item.imagen} alt={item.item_code} />
+                  </a>
+                )}
               </td>
               <td>
                 <div className='d-grid gap-2'>
