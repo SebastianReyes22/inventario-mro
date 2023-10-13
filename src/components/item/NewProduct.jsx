@@ -17,6 +17,8 @@ export const NewProduct = () => {
   const [level, setLevel] = useState([]);
   const [levelSelected, setLevelSelected] = useState('');
   const [quantity, setQuantity] = useState('');
+  const [functionProduct, setFunctionProduct] = useState('');
+  const [application, setApplication] = useState('');
 
   const handleSubmit = async () => {
     if (
@@ -26,6 +28,8 @@ export const NewProduct = () => {
       levelSelected === '' ||
       quantity === '' ||
       descriptionEnglish === '' ||
+      functionProduct === '' ||
+      application === '' ||
       document.querySelector('input[type="file"]').files.length === 0
     ) {
       alert('Faltan campos por llenar');
@@ -44,6 +48,8 @@ export const NewProduct = () => {
     formData.append('ubicacion', locationSelected);
     formData.append('nivel', levelSelected);
     formData.append('cantidad', quantity);
+    formData.append('funcion', functionProduct);
+    formData.append('aplicacion', application);
     formData.append('imagen', base64);
 
     await axios
@@ -125,6 +131,24 @@ export const NewProduct = () => {
         </Row>
         <Row className='mt-4'>
           <Col>
+            <Form.Label>Función</Form.Label>
+            <Form.Control
+              type='text'
+              placeholder='Este dispositivo es utilizado para...'
+              value={functionProduct}
+              onChange={e => setFunctionProduct(e.target.value)}
+            />
+          </Col>
+          <Col>
+            <Form.Label>Linea de aplicación</Form.Label>
+            <Form.Control
+              type='text'
+              placeholder='Slitter, Rewinder, etc...'
+              value={application}
+              onChange={e => setApplication(e.target.value)}
+            />
+          </Col>
+          <Col>
             <Form.Label>Imagen</Form.Label>
             <Form.Control
               type='file'
@@ -133,6 +157,9 @@ export const NewProduct = () => {
               onChange={e => convertToBase64(e.target.files)}
             />
           </Col>
+        </Row>
+        <Row>
+          <Col className='col-10' />
           <Col className='col-2'>
             <div className='d-grid gap-2 mt-4'>
               <Button variant='primary' onClick={handleSubmit}>

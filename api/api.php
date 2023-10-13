@@ -29,6 +29,8 @@
                 $array[$x]['ubicacion'] = $row['ubicacion'];
                 $array[$x]['nivel'] = $row['nivel'];
                 $array[$x]['cantidad'] = $row['cantidad'];
+                $array[$x]['funcion'] = $row['funcion'];
+                $array[$x]['aplicacion'] = $row['aplicacion'];
                 $array[$x]['imagen'] = $row['imagen'];
                 $x++;
             }
@@ -39,8 +41,8 @@
     }
 
     if ($_POST['option'] == 'insert') {
-        $query = 'INSERT INTO inventario (item_code, descripcion, descripcion_ingles, ubicacion, nivel, cantidad, imagen) 
-                    VALUES (:item_code, :descripcion, :descripcion_ingles, :ubicacion, :nivel, :cantidad, :imagen);';
+        $query = 'INSERT INTO inventario (item_code, descripcion, descripcion_ingles, ubicacion, nivel, cantidad, funcion, aplicacion, imagen) 
+                    VALUES (:item_code, :descripcion, :descripcion_ingles, :ubicacion, :nivel, :cantidad, :funcion, :aplicacion, :imagen);';
 
         try {
             $statement = $db->prepare($query);
@@ -50,6 +52,8 @@
             $statement->bindParam(':ubicacion', $_POST['ubicacion']);
             $statement->bindParam(':nivel', $_POST['nivel']);
             $statement->bindParam(':cantidad', $_POST['cantidad']);
+            $statement->bindParam(':funcion', $_POST['funcion']);
+            $statement->bindParam(':aplicacion', $_POST['aplicacion']);
             $statement->bindParam(':imagen', $_POST['imagen']);
             $statement->execute();
     
@@ -91,6 +95,8 @@
                 $array[$x]['nivel'] = $row['nivel'];
                 $array[$x]['imagen'] = $row['imagen'];
                 $array[$x]['ubicacion'] = $row['ubicacion'];
+                $array[$x]['funcion'] = $row['funcion'];
+                $array[$x]['aplicacion'] = $row['aplicacion'];
                 $x++;
             }
             echo json_encode($array);
@@ -251,6 +257,8 @@
                 $array[$x]['nivel'] = $row['nivel'];
                 $array[$x]['imagen'] = $row['imagen'];
                 $array[$x]['ubicacion'] = $row['ubicacion'];
+                $array[$x]['funcion'] = $row['funcion'];
+                $array[$x]['aplicacion'] = $row['aplicacion'];
                 $x++;
             }
             echo json_encode($array);
@@ -282,7 +290,8 @@
     // Actualizar item
     if ($_POST['option'] == 'updateProductDB') {
         $query = "UPDATE inventario SET item_code = :item_code, descripcion = :descripcion, descripcion_ingles = :descripcion_ingles,
-                    ubicacion = :ubicacion, nivel = :nivel, cantidad = :cantidad, imagen = :imagen WHERE id_inventario = :id_inventario;";
+                    ubicacion = :ubicacion, nivel = :nivel, cantidad = :cantidad, funcion = :funcion, aplicacion = :aplicacion, 
+                    imagen = :imagen WHERE id_inventario = :id_inventario;";
     
         $statement = $db->prepare($query);
         $statement->bindParam(':item_code', $_POST['item_code']);
@@ -291,6 +300,8 @@
         $statement->bindParam(':ubicacion', $_POST['ubicacion']);
         $statement->bindParam(':nivel', $_POST['nivel']);
         $statement->bindParam(':cantidad', $_POST['cantidad']);
+        $statement->bindParam(':funcion', $_POST['funcion']);
+        $statement->bindParam(':aplicacion', $_POST['aplicacion']);
         $statement->bindParam(':imagen', $_POST['imagen']);
         $statement->bindParam(':id_inventario', $_POST['id_inventario']);
         $statement->execute();

@@ -20,6 +20,8 @@ export const TableEditDataBase = props => {
         ubicacion: item.ubicacion,
         nivel: item.nivel,
         cantidad: item.cantidad,
+        funcion: item.funcion,
+        aplicacion: item.aplicacion,
         imagen: item.imagen,
       },
     });
@@ -32,7 +34,9 @@ export const TableEditDataBase = props => {
       editStates[item.id_inventario].descripcion_ingles === '' ||
       editStates[item.id_inventario].ubicacion === '' ||
       editStates[item.id_inventario].nivel === '' ||
-      editStates[item.id_inventario].cantidad === ''
+      editStates[item.id_inventario].cantidad === '' ||
+      editStates[item.id_inventario].funcion === '' ||
+      editStates[item.id_inventario].aplicacion === ''
     ) {
       alert('Error, no se puede dejar campos vacios');
       return;
@@ -58,6 +62,8 @@ export const TableEditDataBase = props => {
     formData.append('ubicacion', editStates[item.id_inventario].ubicacion);
     formData.append('nivel', editStates[item.id_inventario].nivel);
     formData.append('cantidad', editStates[item.id_inventario].cantidad);
+    formData.append('funcion', editStates[item.id_inventario].funcion);
+    formData.append('aplicacion', editStates[item.id_inventario].aplicacion);
     formData.append('imagen', base64);
 
     await axios.post(props.URI, formData).then(response => {
@@ -84,6 +90,8 @@ export const TableEditDataBase = props => {
             <th>Ubicación</th>
             <th>Nivel</th>
             <th>Cantidad</th>
+            <th>Función</th>
+            <th>Linea de aplicación</th>
             <th>Imagen</th>
             <th>Guardar</th>
           </tr>
@@ -204,6 +212,44 @@ export const TableEditDataBase = props => {
                   />
                 ) : (
                   item.cantidad
+                )}
+              </td>
+              <td>
+                {isEditing ? (
+                  <Form.Control
+                    type='text'
+                    value={editStates[item.id_inventario]?.funcion}
+                    onChange={e =>
+                      setEditStates({
+                        ...editStates,
+                        [item.id_inventario]: {
+                          ...editStates[item.id_inventario],
+                          funcion: e.target.value,
+                        },
+                      })
+                    }
+                  />
+                ) : (
+                  item.funcion
+                )}
+              </td>
+              <td>
+                {isEditing ? (
+                  <Form.Control
+                    type='text'
+                    value={editStates[item.id_inventario]?.aplicacion}
+                    onChange={e =>
+                      setEditStates({
+                        ...editStates,
+                        [item.id_inventario]: {
+                          ...editStates[item.id_inventario],
+                          aplicacion: e.target.value,
+                        },
+                      })
+                    }
+                  />
+                ) : (
+                  item.aplicacion
                 )}
               </td>
               <td className='td-img'>
