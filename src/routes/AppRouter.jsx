@@ -9,7 +9,7 @@ import {
   NewProductPage,
   ReportPage,
 } from '../pages/admin';
-import { FindItemPage } from '../pages/guest';
+import { FindItemPage, FindItemScreenMobile } from '../pages/guest';
 import ProtectedRoutes from './ProtectedRoutes';
 
 export const AppRouter = () => {
@@ -20,6 +20,7 @@ export const AppRouter = () => {
       <Route path='*' element={<h1>Page not found 404</h1>} />
 
       <Route path='/buscar' element={<FindItemPage />} />
+      <Route path='/qr-item' element={<FindItemScreenMobile />} />
 
       <Route path='/new-user' element={<CreateNewUserPage />} />
 

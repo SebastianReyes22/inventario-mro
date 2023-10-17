@@ -1,19 +1,6 @@
-import { useNavigate } from 'react-router-dom';
-import { useUserAuth } from '../src/context/UserAuthContext';
+const API = import.meta.env.VITE_APP_API_MOBILE;
 
-export const login = async (user, password) => {
-  const navigate = useNavigate();
-
-  const { logIn } = useUserAuth();
-
-  let email = '';
-
-  email = user + '@poscomppc.com';
-
-  try {
-    await logIn(email, password);
-    navigate('/inventario');
-  } catch (err) {
-    alert('Datos incorrectos');
-  }
+export const getItem = async data => {
+  const res = await fetch(`${API}/${data}`);
+  return await res.json();
 };
